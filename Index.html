@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Амантай Сұлтанәлі, 2 «Ғ» класс">
+<meta name="description" content="Школьный проект о сортировке мусора: опыт, игра, пункты приёма вторсырья в Астане, предложение школе.">
+<title>Эко-проект Сұлтанәлі</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800;900&display=swap">
+<style>
+:root{
+  --ground:#F2FAF6;
+  --paper:#FFFFFF;
+  --ink:#1B2A4A;
+  --ink-soft:#4A5878;
+  --line:#D5E6DD;
+  --blue:#2F7DF6;
+  --yellow:#FFC531;
+  --green:#1FAE6B;
+  --orange:#FF8A3D;
+  --red:#F24B45;
+  --brown:#8C7A6B;
+  --leaf:#0E8F58;
+  --sky:#DDF0FF;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  background:var(--ground);color:var(--ink);
+  font-family:"Nunito","Segoe UI",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:18px;line-height:1.55;
+}
+[data-lang="ru"] .kk{display:none!important}
+[data-lang="kk"] .ru{display:none!important}
+h1,h2,h3{font-family:"Comfortaa","Nunito",system-ui,sans-serif;font-weight:700;line-height:1.2;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,5vw,40px)}
+h3{font-size:22px}
+p{margin:0}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(242,250,246,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font-family:"Comfortaa",sans-serif;font-weight:700;font-size:18px;color:var(--ink);text-decoration:none}
+.logo svg{flex:none}
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.nav a{font-weight:800;font-size:15px;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:999px;background:var(--paper);border:2px solid var(--line)}
+.nav a:hover{border-color:var(--ink)}
+.lang{display:flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;flex:none}
+.lang button{font:inherit;font-weight:900;font-size:15px;border:0;background:var(--paper);color:var(--ink);padding:6px 14px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+@media (max-width:760px){.nav{order:3;width:100%;margin-left:0;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}.nav a{white-space:nowrap}.lang{margin-left:auto}}
+
+/* hero */
+.hero{padding-block:40px 28px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr}}
+.badge{display:inline-flex;gap:8px;align-items:center;background:var(--yellow);color:var(--ink);font-weight:900;font-size:15px;padding:6px 14px;border-radius:999px;margin-bottom:16px}
+.hero h1{font-size:clamp(36px,7vw,64px);letter-spacing:-.5px}
+.hero h1 .hl{color:var(--green)}
+.hero .lead{font-size:20px;color:var(--ink-soft);margin-top:16px;max-width:34em}
+.author{margin-top:20px;display:flex;align-items:center;gap:12px;font-weight:800}
+.author .av{width:48px;height:48px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:"Comfortaa",sans-serif;font-size:20px;flex:none}
+.author small{display:block;font-weight:600;color:var(--ink-soft);font-size:15px}
+.bins-art{width:100%;height:auto;display:block}
+
+/* sections */
+section{padding-block:48px}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;max-width:720px}
+.kicker{font-weight:900;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf)}
+.sec-head p{color:var(--ink-soft);font-size:19px}
+.band{background:var(--paper);border-block:2px solid var(--line)}
+
+/* experiment */
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:820px){.exp-grid{grid-template-columns:1fr}}
+.steps{display:grid;gap:14px;list-style:none;padding:0;margin:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;counter-increment:s}
+.steps li::before{content:counter(s);width:44px;height:44px;border-radius:50%;background:var(--sky);color:var(--blue);font-family:"Comfortaa",sans-serif;font-weight:700;font-size:20px;display:grid;place-items:center}
+.steps b{display:block}
+.calc{background:var(--ink);color:#fff;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.seg{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:4px;gap:4px;align-self:flex-start;flex-wrap:wrap}
+.seg button{font:inherit;font-weight:800;font-size:16px;border:0;background:transparent;color:#fff;padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--yellow);color:var(--ink)}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:420px){.nums{grid-template-columns:1fr}}
+.num{background:rgba(255,255,255,.08);border-radius:18px;padding:16px}
+.num .lbl{font-size:15px;opacity:.85;font-weight:700}
+.num .val{font-family:"Comfortaa",sans-serif;font-weight:700;font-size:clamp(32px,6vw,44px);line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
+.num .val small{font-size:.5em}
+.num .cmp{font-size:15px;margin-top:6px;color:var(--yellow);font-weight:700}
+.formula{font-size:15px;opacity:.85;font-variant-numeric:tabular-nums}
+.bags{display:flex;flex-wrap:wrap;gap:3px;align-items:flex-end}
+.bags i{width:12px;height:14px;border-radius:3px 3px 5px 5px;background:var(--green);display:block;position:relative}
+.bags i::before{content:"";position:absolute;left:4px;top:-4px;width:4px;height:4px;border-radius:2px;background:var(--green)}
+
+/* bins guide */
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.bins{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.bins{grid-template-columns:1fr}}
+.bin{border-radius:20px;padding:18px;background:var(--paper);border:3px solid var(--c);display:flex;flex-direction:column;gap:8px}
+.bin .top{display:flex;align-items:center;gap:10px}
+.bin .dot{width:40px;height:40px;border-radius:12px;background:var(--c);flex:none;display:grid;place-items:center}
+.bin h3{font-size:20px}
+.bin .yes{font-size:16px}
+.bin .no{font-size:15px;color:var(--ink-soft)}
+.bin .no b{color:var(--red)}
+
+/* game */
+.game{margin-top:36px;background:var(--sky);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.score{font-weight:900;font-size:18px;background:var(--paper);padding:8px 16px;border-radius:999px;font-variant-numeric:tabular-nums}
+.current{display:flex;align-items:center;gap:18px;background:var(--paper);border-radius:20px;padding:16px 20px;min-height:96px}
+.current .emo{font-size:56px;line-height:1}
+.current .name{font-weight:900;font-size:22px}
+.current .hint{font-size:15px;color:var(--ink-soft)}
+.targets{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media (max-width:760px){.targets{grid-template-columns:repeat(3,1fr)}}
+.targets button{font:inherit;font-weight:800;font-size:15px;line-height:1.2;border:0;border-radius:16px 16px 12px 12px;padding:14px 6px 12px;color:#fff;background:var(--c);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:inset 0 -5px 0 rgba(0,0,0,.18);transition:transform .15s}
+.targets button:hover{transform:translateY(-3px)}
+.targets button.dark{color:var(--ink)}
+.targets button.good{animation:pop .45s}
+.targets button.bad{animation:shake .4s}
+@keyframes pop{50%{transform:scale(1.12)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.feedback{min-height:28px;font-weight:800;font-size:18px}
+.feedback.ok{color:var(--leaf)}
+.feedback.err{color:var(--red)}
+.btn{font:inherit;font-weight:900;font-size:17px;border:0;border-radius:999px;padding:12px 22px;background:var(--ink);color:#fff;cursor:pointer;align-self:flex-start}
+.btn.alt{background:var(--paper);color:var(--ink);border:2px solid var(--ink)}
+
+/* class plan */
+.plan{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px}
+@media (max-width:720px){.plan{grid-template-columns:1fr}}
+.plan .card{background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.plan ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.rules{margin-top:16px;background:var(--yellow);border-radius:20px;padding:20px 24px}
+.rules ol{margin:10px 0 0;padding-left:24px;display:grid;gap:6px;font-weight:700}
+
+/* map */
+.map-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}
+@media (max-width:900px){.map-grid{grid-template-columns:1fr}}
+.map-box{background:var(--paper);border:2px solid var(--line);border-radius:24px;padding:10px;overflow:hidden}
+.map-box svg{width:100%;height:auto;display:block}
+.pin{cursor:pointer}
+.pin circle.outer{transition:r .15s}
+.pin:hover circle.outer,.pin.on circle.outer{r:23}
+.pin:focus{outline:none}
+.pin:focus-visible circle.outer{stroke:var(--blue);stroke-width:4}
+.map-note{font-size:14px;color:var(--ink-soft);padding:8px 8px 4px}
+.places{display:grid;gap:10px;max-height:560px;overflow-y:auto;padding-right:4px}
+.place{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:14px 16px;display:grid;gap:6px;scroll-margin:80px}
+.place.on{border-color:var(--ink);box-shadow:0 0 0 3px var(--yellow)}
+.place .ph{display:flex;align-items:center;gap:10px}
+.place .no{width:30px;height:30px;border-radius:50%;background:var(--c,var(--green));color:#fff;font-weight:900;font-size:15px;display:grid;place-items:center;flex:none}
+.place h3{font-size:18px}
+.place .addr{font-weight:700}
+.place .meta{font-size:15px;color:var(--ink-soft)}
+.place .meta a{white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--cbg);color:var(--ink)}
+.place a.go{font-weight:800;font-size:15px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{font:inherit;font-weight:800;font-size:15px;border:2px solid var(--line);background:var(--paper);color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* proposal */
+.letter{background:var(--paper);border-radius:8px;padding:clamp(20px,5vw,48px);max-width:820px;margin:0 auto;box-shadow:0 2px 0 var(--line),0 16px 40px rgba(27,42,74,.08);position:relative}
+.letter::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;border-radius:8px 8px 0 0;background:linear-gradient(90deg,var(--blue) 0 20%,var(--yellow) 20% 40%,var(--green) 40% 60%,var(--orange) 60% 80%,var(--red) 80%)}
+.letter .to{text-align:right;font-weight:700;color:var(--ink-soft);margin-bottom:24px}
+.letter h3{font-size:26px;margin-bottom:14px}
+.letter p+p{margin-top:12px}
+.letter .asks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+@media (max-width:640px){.letter .asks{grid-template-columns:1fr}}
+.ask{border-radius:16px;padding:16px;background:var(--ground)}
+.ask b{display:block;font-size:17px;margin-bottom:4px}
+.ask p{font-size:16px}
+.cont{display:flex;gap:8px;margin-bottom:10px}
+.cont span{width:28px;height:34px;border-radius:6px 6px 8px 8px;background:var(--c);display:block;box-shadow:inset 0 -4px 0 rgba(0,0,0,.15)}
+.sign{margin-top:26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:700}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:820px){.why{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:500px){.why{grid-template-columns:1fr}}
+.fact{border-radius:22px;padding:22px;background:var(--bg);color:var(--fg,var(--ink));display:flex;flex-direction:column;gap:8px}
+.fact .big{font-family:"Comfortaa",sans-serif;font-weight:700;font-size:40px;line-height:1.05}
+.fact .big small{font-size:18px}
+.decomp{margin-top:32px;background:var(--paper);border:2px solid var(--line);border-radius:24px;padding:22px}
+.decomp h3{margin-bottom:14px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 110px;gap:12px;align-items:center;padding-block:7px}
+@media (max-width:560px){.bar-row{grid-template-columns:1fr 90px}.bar-row .track{grid-column:1/-1;grid-row:2}}
+.bar-row .track{height:18px;background:var(--ground);border-radius:999px;overflow:hidden}
+.bar-row .fill{height:100%;border-radius:999px;background:var(--c)}
+.bar-row .yrs{font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+.decomp .src{font-size:14px;color:var(--ink-soft);margin-top:10px}
+.promise{margin-top:32px;background:var(--green);color:#fff;border-radius:28px;padding:28px;display:grid;gap:14px}
+.promise h3{font-size:28px}
+.promise ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (max-width:600px){.promise ul{grid-template-columns:1fr}}
+.promise li{background:rgba(255,255,255,.16);border-radius:14px;padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:flex-start}
+.promise li::before{content:"";flex:none;width:20px;height:20px;margin-top:3px;border-radius:6px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%230E8F58' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+
+footer{padding-block:36px 48px;color:var(--ink-soft);font-size:15px;border-top:2px solid var(--line)}
+footer .wrap{display:grid;gap:8px}
+</style>
+</head>
+<body>
+
+
+<div data-lang="ru" id="app">
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3c6 4 9 9 9 14a9 9 0 0 1-18 0c0-5 3-10 9-14z" fill="#1FAE6B"/><path d="M15 9v18" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M15 17l-4-3M15 21l4-3" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span class="ru">Сортируем!</span><span class="kk">Сұрыптаймыз!</span>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#experiment"><span class="ru">Опыт</span><span class="kk">Тәжірибе</span></a>
+      <a href="#class"><span class="ru">В классе</span><span class="kk">Сыныпта</span></a>
+      <a href="#map"><span class="ru">Карта</span><span class="kk">Карта</span></a>
+      <a href="#school"><span class="ru">Школе</span><span class="kk">Мектепке</span></a>
+      <a href="#why"><span class="ru">Почему важно</span><span class="kk">Неге маңызды</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Язык / Тіл">
+      <button type="button" id="lang-ru" aria-pressed="true">RU</button>
+      <button type="button" id="lang-kk" aria-pressed="false">KZ</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<div class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <span class="badge"><span class="ru">Исследовательский проект</span><span class="kk">Зерттеу жобасы</span></span>
+      <h1>
+        <span class="ru">Одна неделя — и&nbsp;<span class="hl">15&nbsp;кг</span> мусора от нашей семьи</span>
+        <span class="kk">Бір апта — біздің отбасыдан <span class="hl">15&nbsp;кг</span> қоқыс</span>
+      </h1>
+      <p class="lead">
+        <span class="ru">Я целую неделю сортировал мусор дома, взвешивал его и посчитал, сколько выбрасывает весь наш дом. Получилось очень много! Давайте вместе узнаем, как сортировать мусор и куда его сдавать в Астане.</span>
+        <span class="kk">Мен бір апта бойы үйде қоқысты сұрыптап, өлшеп, біздің бүкіл үй қанша қоқыс шығаратынын есептедім. Өте көп болып шықты! Қоқысты қалай сұрыптау керек және Астанада оны қайда тапсыруға болатынын бірге білейік.</span>
+      </p>
+      <div class="author">
+        <span class="av" aria-hidden="true">А</span>
+        <span>Амантай Сұлтанәлі
+          <small><span class="ru">ученик 2 «Ғ» класса, Астана</span><span class="kk">2 «Ғ» сынып оқушысы, Астана</span></small>
+        </span>
+      </div>
+    </div>
+    <svg class="bins-art" viewBox="0 0 420 300" role="img" aria-label="Пять цветных контейнеров для сортировки">
+      <ellipse cx="210" cy="276" rx="200" ry="14" fill="#D5E6DD"/>
+      <g>
+        <rect x="18" y="120" width="68" height="150" rx="10" fill="#2F7DF6"/><rect x="12" y="106" width="80" height="20" rx="8" fill="#1F5FC4"/>
+        <rect x="36" y="160" width="32" height="40" rx="3" fill="#fff" opacity=".9"/><path d="M42 172h20M42 180h20M42 188h14" stroke="#2F7DF6" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g>
+        <rect x="98" y="96" width="68" height="174" rx="10" fill="#FFC531"/><rect x="92" y="82" width="80" height="20" rx="8" fill="#E0A40C"/>
+        <path d="M124 150h16v8l6 8v36a4 4 0 0 1-4 4h-20a4 4 0 0 1-4-4v-36l6-8z" fill="#fff" opacity=".9"/><rect x="126" y="142" width="12" height="8" rx="2" fill="#fff"/>
+      </g>
+      <g>
+        <rect x="178" y="70" width="68" height="200" rx="10" fill="#1FAE6B"/><rect x="172" y="56" width="80" height="20" rx="8" fill="#138A52"/>
+        <path d="M204 122h16v14c8 4 10 10 10 16v40a4 4 0 0 1-4 4h-28a4 4 0 0 1-4-4v-40c0-6 2-12 10-16z" fill="#fff" opacity=".9"/>
+      </g>
+      <g>
+        <rect x="258" y="110" width="68" height="160" rx="10" fill="#FF8A3D"/><rect x="252" y="96" width="80" height="20" rx="8" fill="#D96A1F"/>
+        <rect x="278" y="150" width="28" height="46" rx="6" fill="#fff" opacity=".9"/><path d="M278 162h28M278 184h28" stroke="#FF8A3D" stroke-width="3"/>
+      </g>
+      <g>
+        <rect x="338" y="150" width="68" height="120" rx="10" fill="#F24B45"/><rect x="332" y="136" width="80" height="20" rx="8" fill="#C7302B"/>
+        <rect x="360" y="178" width="24" height="44" rx="4" fill="#fff" opacity=".9"/><rect x="367" y="172" width="10" height="7" rx="2" fill="#fff"/><path d="M372 190v12M366 196h12" stroke="#F24B45" stroke-width="3" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- EXPERIMENT -->
+<section id="experiment" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker"><span class="ru">Мой опыт</span><span class="kk">Менің тәжірибем</span></span>
+      <h2><span class="ru">Сколько мусора мы выбрасываем?</span><span class="kk">Біз қанша қоқыс тастаймыз?</span></h2>
+      <p><span class="ru">Наша семья — 4 человека. В нашем доме 96 квартир. Нажми на кнопки и посмотри, как растёт гора мусора.</span><span class="kk">Біздің отбасы — 4 адам. Біздің үйде 96 пәтер бар. Түймелерді басып, қоқыс тауының қалай өсетінін көр.</span></p>
+    </div>
+    <div class="exp-grid">
+      <ol class="steps">
+        <li><div><b><span class="ru">Разделил мусор</span><span class="kk">Қоқысты бөлдім</span></b><span class="ru">Дома поставил отдельные пакеты: бумага, пластик, стекло, металл и остальное.</span><span class="kk">Үйде бөлек пакеттер қойдым: қағаз, пластик, шыны, металл және басқалары.</span></div></li>
+        <li><div><b><span class="ru">Взвешивал каждый день</span><span class="kk">Күн сайын өлшедім</span></b><span class="ru">Семь дней подряд записывал, сколько весит мусор нашей семьи.</span><span class="kk">Жеті күн қатарынан отбасымыздың қоқысы қанша тартатынын жазып отырдым.</span></div></li>
+        <li><div><b><span class="ru">Сложил и посчитал</span><span class="kk">Қосып, есептедім</span></b><span class="ru">За неделю вышло 15 кг. Потом умножил на 96 квартир нашего дома.</span><span class="kk">Бір аптада 15 кг шықты. Содан кейін үйіміздің 96 пәтеріне көбейттім.</span></div></li>
+        <li><div><b><span class="ru">Сделал вывод</span><span class="kk">Қорытынды жасадым</span></b><span class="ru">Если сортировать, большую часть можно отдать на переработку, а не на свалку!</span><span class="kk">Сұрыптасақ, көп бөлігін полигонға емес, қайта өңдеуге беруге болады!</span></div></li>
+      </ol>
+      <div class="calc" aria-live="polite">
+        <div class="seg" role="group" aria-label="Период">
+          <button type="button" data-p="w" aria-pressed="true"><span class="ru">Неделя</span><span class="kk">Апта</span></button>
+          <button type="button" data-p="m" aria-pressed="false"><span class="ru">Месяц</span><span class="kk">Ай</span></button>
+          <button type="button" data-p="y" aria-pressed="false"><span class="ru">Год</span><span class="kk">Жыл</span></button>
+        </div>
+        <div class="nums">
+          <div class="num">
+            <div class="lbl"><span class="ru">Наша семья (4 чел.)</span><span class="kk">Біздің отбасы (4 адам)</span></div>
+            <div class="val" id="v-fam">15 <small>кг</small></div>
+            <div class="cmp" id="c-fam"></div>
+          </div>
+          <div class="num">
+            <div class="lbl"><span class="ru">Весь дом (96 квартир)</span><span class="kk">Бүкіл үй (96 пәтер)</span></div>
+            <div class="val" id="v-house">1,44 <small>т</small></div>
+            <div class="cmp" id="c-house"></div>
+          </div>
+        </div>
+        <div class="bags" id="bags" aria-hidden="true"></div>
+        <div class="formula" id="formula"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLASS -->
+<section id="class">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker"><span class="ru">Сортировка в нашем классе</span><span class="kk">Біздің сыныптағы сұрыптау</span></span>
+      <h2><span class="ru">Какой мусор — в какой контейнер?</span><span class="kk">Қай қоқыс — қай контейнерге?</span></h2>
+      <p><span class="ru">У каждого вида мусора свой цвет. Запомни их — и сортировать будет легко!</span><span class="kk">Әр қоқыс түрінің өз түсі бар. Оларды есте сақта — сұрыптау оңай болады!</span></p>
+    </div>
+
+    <div class="bins">
+      <div class="bin" style="--c:var(--blue)">
+        <div class="top"><span class="dot"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="2" width="14" height="18" rx="2" fill="#fff"/><path d="M7 7h8M7 11h8M7 15h5" stroke="#2F7DF6" stroke-width="2" stroke-linecap="round"/></svg></span><h3><span class="ru">Бумага</span><span class="kk">Қағаз</span></h3></div>
+        <p class="yes"><span class="ru">Старые тетради, листы, газеты, картонные коробки.</span><span class="kk">Ескі дәптерлер, парақтар, газеттер, картон қораптар.</span></p>
+        <p class="no"><b><span class="ru">Нельзя:</span><span class="kk">Болмайды:</span></b> <span class="ru">грязные салфетки, бумажные стаканы.</span><span class="kk">лас майлықтар, қағаз стақандар.</span></p>
+      </div>
+      <div class="bin" style="--c:var(--yellow)">
+        <div class="top"><span class="dot"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M8 2h6v4l3 4v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9l3-4z" fill="#fff"/></svg></span><h3><span class="ru">Пластик</span><span class="kk">Пластик</span></h3></div>
+        <p class="yes"><span class="ru">Бутылки от воды и сока, пакеты, крышки, флаконы от шампуня.</span><span class="kk">Су мен шырын бөтелкелері, пакеттер, қақпақтар, сусабын құтылары.</span></p>
+        <p class="no"><b><span class="ru">Совет:</span><span class="kk">Кеңес:</span></b> <span class="ru">сплющи бутылку — места станет больше.</span><span class="kk">бөтелкені жаншып таста — орын көбейеді.</span></p>
+      </div>
+      <div class="bin" style="--c:var(--green)">
+        <div class="top"><span class="dot"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M8 2h6v5c3 1 4 3 4 6v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6c0-3 1-5 4-6z" fill="#fff"/></svg></span><h3><span class="ru">Стекло</span><span class="kk">Шыны</span></h3></div>
+        <p class="yes"><span class="ru">Стеклянные банки и бутылки.</span><span class="kk">Шыны банкалар мен бөтелкелер.</span></p>
+        <p class="no"><b><span class="ru">Нельзя:</span><span class="kk">Болмайды:</span></b> <span class="ru">зеркала, лампочки, разбитую посуду. Стекло выбрасывают только взрослые!</span><span class="kk">айналар, шамдар, сынған ыдыс. Шыныны тек ересектер тастайды!</span></p>
+      </div>
+      <div class="bin" style="--c:var(--orange)">
+        <div class="top"><span class="dot"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="5" y="3" width="12" height="16" rx="3" fill="#fff"/><path d="M5 7h12M5 15h12" stroke="#FF8A3D" stroke-width="2"/></svg></span><h3><span class="ru">Металл</span><span class="kk">Металл</span></h3></div>
+        <p class="yes"><span class="ru">Алюминиевые банки от напитков, консервные банки, крышки от банок.</span><span class="kk">Сусын алюминий банкалары, консерві банкалары, банка қақпақтары.</span></p>
+        <p class="no"><b><span class="ru">Совет:</span><span class="kk">Кеңес:</span></b> <span class="ru">сполосни банку водой.</span><span class="kk">банканы сумен шайып ал.</span></p>
+      </div>
+      <div class="bin" style="--c:var(--red)">
+        <div class="top"><span class="dot"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="7" y="4" width="8" height="16" rx="2" fill="#fff"/><rect x="9" y="2" width="4" height="3" rx="1" fill="#fff"/><path d="M11 9v6M8 12h6" stroke="#F24B45" stroke-width="2" stroke-linecap="round"/></svg></span><h3><span class="ru">Батарейки</span><span class="kk">Батареялар</span></h3></div>
+        <p class="yes"><span class="ru">Все батарейки и маленькие аккумуляторы. Собираем в отдельную коробку.</span><span class="kk">Барлық батареялар мен шағын аккумуляторлар. Бөлек қорапқа жинаймыз.</span></p>
+        <p class="no"><b><span class="ru">Важно:</span><span class="kk">Маңызды:</span></b> <span class="ru">никогда не выбрасывай батарейку в обычное ведро — она опасна для природы.</span><span class="kk">батареяны ешқашан кәдімгі шелекке тастама — ол табиғатқа қауіпті.</span></p>
+      </div>
+      <div class="bin" style="--c:var(--brown)">
+        <div class="top"><span class="dot"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 5c4 0 7 3 7 7s-3 8-7 8-7-4-7-8 3-7 7-7z" fill="#fff"/><path d="M11 5c0-2 1-3 3-3" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/></svg></span><h3><span class="ru">Остальное</span><span class="kk">Қалғаны</span></h3></div>
+        <p class="yes"><span class="ru">Огрызки, остатки еды, грязные салфетки, фантики.</span><span class="kk">Жеміс қалдықтары, тамақ қалдықтары, лас майлықтар, кәмпит қағаздары.</span></p>
+        <p class="no"><b><span class="ru">Это</span><span class="kk">Бұл</span></b> <span class="ru">обычное мусорное ведро.</span><span class="kk">кәдімгі қоқыс шелегі.</span></p>
+      </div>
+    </div>
+
+    <!-- GAME -->
+    <div class="game" id="game">
+      <div class="game-top">
+        <h3><span class="ru">Игра: разложи мусор!</span><span class="kk">Ойын: қоқысты сұрыпта!</span></h3>
+        <span class="score" id="score"></span>
+      </div>
+      <div class="current">
+        <span class="emo" id="g-emo" aria-hidden="true"></span>
+        <div><div class="name" id="g-name"></div><div class="hint"><span class="ru">Нажми на правильный контейнер</span><span class="kk">Дұрыс контейнерді бас</span></div></div>
+      </div>
+      <div class="targets" id="targets"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <button type="button" class="btn alt" id="restart" hidden><span class="ru">Играть ещё раз</span><span class="kk">Қайта ойнау</span></button>
+    </div>
+
+    <!-- PLAN -->
+    <div class="rules">
+      <h3><span class="ru">Правила нашего класса</span><span class="kk">Біздің сыныптың ережелері</span></h3>
+      <ol>
+        <li><span class="ru">Прежде чем выбросить — подумай: какой это мусор?</span><span class="kk">Тастамас бұрын ойлан: бұл қандай қоқыс?</span></li>
+        <li><span class="ru">Бумагу не мнём и не мочим.</span><span class="kk">Қағазды умаждамаймыз және суламаймыз.</span></li>
+        <li><span class="ru">Бутылку допил — сплющил — в жёлтую коробку.</span><span class="kk">Бөтелкені ішіп болдың — жаншыдың — сары қорапқа.</span></li>
+        <li><span class="ru">Батарейки из дома приносим в красную коробку.</span><span class="kk">Үйдегі батареяларды қызыл қорапқа әкелеміз.</span></li>
+        <li><span class="ru">Стараемся мусорить меньше: многоразовая бутылка и ланч-бокс.</span><span class="kk">Аз қоқыс шығаруға тырысамыз: көп реттік бөтелке мен ас қорабы.</span></li>
+      </ol>
+    </div>
+    <div class="plan">
+      <div class="card">
+        <h3><span class="ru">Что нужно классу</span><span class="kk">Сыныпқа не керек</span></h3>
+        <ul>
+          <li><span class="ru">Синяя коробка для бумаги — возле доски.</span><span class="kk">Қағазға арналған көк қорап — тақтаның жанында.</span></li>
+          <li><span class="ru">Жёлтая коробка для пластика — возле двери.</span><span class="kk">Пластикке арналған сары қорап — есіктің жанында.</span></li>
+          <li><span class="ru">Маленькая красная коробка для батареек — у учителя.</span><span class="kk">Батареяларға арналған кішкентай қызыл қорап — мұғалімде.</span></li>
+          <li><span class="ru">Обычное ведро — для остального.</span><span class="kk">Кәдімгі шелек — қалғанына.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="ru">Кто за что отвечает</span><span class="kk">Кім неге жауапты</span></h3>
+        <ul>
+          <li><span class="ru">Каждую неделю два эко-дежурных проверяют коробки.</span><span class="kk">Әр апта екі эко-кезекші қораптарды тексереді.</span></li>
+          <li><span class="ru">В пятницу взвешиваем собранное и пишем на плакате.</span><span class="kk">Жұма күні жиналғанды өлшеп, плакатқа жазамыз.</span></li>
+          <li><span class="ru">Раз в месяц родители отвозят вторсырьё в пункт приёма.</span><span class="kk">Айына бір рет ата-аналар екінші шикізатты қабылдау пунктіне апарады.</span></li>
+          <li><span class="ru">В конце четверти — награда самому старательному дежурному.</span><span class="kk">Тоқсан соңында — ең ынталы кезекшіге марапат.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="map" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker"><span class="ru">Куда сдать вторсырьё</span><span class="kk">Екінші шикізатты қайда тапсыру керек</span></span>
+      <h2><span class="ru">Пункты приёма в Астане</span><span class="kk">Астанадағы қабылдау пункттері</span></h2>
+      <p><span class="ru">Нажми на точку на карте, чтобы узнать адрес. Кнопка «Открыть в 2ГИС» покажет точное место и дорогу.</span><span class="kk">Мекенжайды білу үшін картадағы нүктені бас. «2ГИС-те ашу» түймесі нақты орын мен жолды көрсетеді.</span></p>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Фильтр"></div>
+    <div class="map-grid">
+      <div class="map-box">
+        <svg viewBox="0 0 800 560" id="mapsvg" role="img" aria-label="Схема Астаны с пунктами приёма вторсырья">
+          <rect width="800" height="560" fill="#F4F8EE"/>
+          <!-- parks / districts -->
+          <path d="M40 40h720v250c-120 20-240-10-360 10S150 320 40 300z" fill="#EAF2E1"/>
+          <!-- roads -->
+          <g stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M60 180H760"/><path d="M60 100H760"/><path d="M160 40V300"/><path d="M380 40V300"/><path d="M600 40V300"/>
+            <path d="M80 430H760"/><path d="M440 330V540"/><path d="M280 340V540"/><path d="M620 330V540"/>
+          </g>
+          <g stroke="#E1E9D6" stroke-width="3" fill="none">
+            <path d="M60 180H760"/><path d="M60 100H760"/><path d="M160 40V300"/><path d="M380 40V300"/><path d="M600 40V300"/>
+            <path d="M80 430H760"/><path d="M440 330V540"/><path d="M280 340V540"/><path d="M620 330V540"/>
+          </g>
+          <!-- river Esil -->
+          <path d="M0 330C80 300 130 350 210 320S330 280 400 305 520 350 600 310 720 270 800 290" stroke="#8EC9F5" stroke-width="30" fill="none" stroke-linecap="round"/>
+          <path d="M0 330C80 300 130 350 210 320S330 280 400 305 520 350 600 310 720 270 800 290" stroke="#B9DFFB" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <text x="96" y="352" font-family="Nunito,sans-serif" font-weight="800" font-size="17" fill="#2F7DF6" transform="rotate(-6 96 352)"><tspan class="ru">река Есиль</tspan><tspan class="kk">Есіл өзені</tspan></text>
+          <!-- bank labels -->
+          <text x="56" y="72" font-family="Comfortaa,sans-serif" font-weight="700" font-size="18" fill="#6B8A74"><tspan class="ru">Правый берег</tspan><tspan class="kk">Оң жағалау</tspan></text>
+          <text x="56" y="520" font-family="Comfortaa,sans-serif" font-weight="700" font-size="18" fill="#6B8A74"><tspan class="ru">Левый берег</tspan><tspan class="kk">Сол жағалау</tspan></text>
+          <!-- landmarks -->
+          <g font-family="Nunito,sans-serif" font-weight="800" font-size="14" fill="#4A5878">
+            <g transform="translate(470 395)"><path d="M0 -38 L6 -12 L3 -12 L3 14 L-3 14 L-3 -12 L-6 -12Z" fill="#C99A2E"/><circle cx="0" cy="-26" r="9" fill="#FFC531" stroke="#C99A2E" stroke-width="2"/><text x="12" y="10"><tspan class="ru">Байтерек</tspan><tspan class="kk">Бәйтерек</tspan></text></g>
+            <g transform="translate(360 480)"><path d="M-18 12 L0 -22 L18 12Z" fill="#B7C4D8"/><text x="-40" y="30"><tspan class="ru">Хан Шатыр</tspan><tspan class="kk">Хан Шатыр</tspan></text></g>
+            <g transform="translate(300 60)"><rect x="-18" y="-10" width="36" height="16" rx="3" fill="#B7C4D8"/><text x="24" y="4"><tspan class="ru">вокзал</tspan><tspan class="kk">вокзал</tspan></text></g>
+          </g>
+          <g id="pins"></g>
+        </svg>
+        <p class="map-note"><span class="ru">Это упрощённая схема города: точки стоят примерно. Точное место смотри в 2ГИС. Перед поездкой позвони и уточни время работы.</span><span class="kk">Бұл қаланың жеңілдетілген сызбасы: нүктелер шамамен тұр. Нақты орынды 2ГИС-тен қара. Барар алдында қоңырау шалып, жұмыс уақытын нақтыла.</span></p>
+      </div>
+      <div class="places" id="places"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHOOL PROPOSAL -->
+<section id="school">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker"><span class="ru">Моё предложение</span><span class="kk">Менің ұсынысым</span></span>
+      <h2><span class="ru">Давайте поставим контейнеры в школе!</span><span class="kk">Мектепке контейнерлер қояйық!</span></h2>
+    </div>
+    <article class="letter">
+      <p class="to"><span class="ru">Директору школы<br>от Амантая Сұлтанәлі, ученика 2 «Ғ» класса</span><span class="kk">Мектеп директорына<br>2 «Ғ» сынып оқушысы Амантай Сұлтанәліден</span></p>
+      <h3><span class="ru">Предложение</span><span class="kk">Ұсыныс</span></h3>
+      <p><span class="ru">Я неделю сортировал мусор дома и узнал, что одна семья выбрасывает 15 кг мусора в неделю, а наш дом — почти 1,5 тонны. В школе учится много детей, и мусора здесь тоже очень много. Большую часть — бумагу, пластик и металл — можно отдать на переработку.</span><span class="kk">Мен бір апта бойы үйде қоқысты сұрыптап, бір отбасы аптасына 15 кг қоқыс тастайтынын, ал біздің үй — шамамен 1,5 тонна тастайтынын білдім. Мектепте балалар көп оқиды, мұнда да қоқыс өте көп. Оның көп бөлігін — қағазды, пластикті және металды — қайта өңдеуге беруге болады.</span></p>
+      <p><span class="ru">Я предлагаю:</span><span class="kk">Мен ұсынамын:</span></p>
+      <div class="asks">
+        <div class="ask">
+          <div class="cont"><span style="--c:var(--blue)"></span><span style="--c:var(--yellow)"></span><span style="--c:var(--orange)"></span></div>
+          <b><span class="ru">Контейнеры в холле</span><span class="kk">Холлда контейнерлер</span></b>
+          <p><span class="ru">На каждом этаже — три контейнера: бумага, пластик, металл.</span><span class="kk">Әр қабатта — үш контейнер: қағаз, пластик, металл.</span></p>
+        </div>
+        <div class="ask">
+          <div class="cont"><span style="--c:var(--red)"></span></div>
+          <b><span class="ru">Бокс для батареек</span><span class="kk">Батарея жәшігі</span></b>
+          <p><span class="ru">Один безопасный бокс у входа, чтобы ученики приносили батарейки из дома.</span><span class="kk">Оқушылар үйден батарея әкелуі үшін кіреберісте бір қауіпсіз жәшік.</span></p>
+        </div>
+        <div class="ask">
+          <div class="cont"><span style="--c:var(--green)"></span><span style="--c:var(--blue)"></span></div>
+          <b><span class="ru">Эко-патруль</span><span class="kk">Эко-патруль</span></b>
+          <p><span class="ru">Дежурные из разных классов следят за контейнерами и рассказывают другим, как сортировать.</span><span class="kk">Әр сыныптан кезекшілер контейнерлерді қадағалап, басқаларға қалай сұрыптау керегін айтады.</span></p>
+        </div>
+      </div>
+      <p><span class="ru">Собранное вторсырьё можно сдавать в пункты приёма Астаны — в некоторых за него даже платят. На эти деньги можно купить книги или растения для класса. Так мы поможем природе и научимся заботиться о нашем городе.</span><span class="kk">Жиналған екінші шикізатты Астананың қабылдау пункттеріне тапсыруға болады — кейбіреулері оған тіпті ақша төлейді. Бұл ақшаға сыныпқа кітаптар немесе өсімдіктер сатып алуға болады. Осылай біз табиғатқа көмектесіп, қаламызға қамқор болуды үйренеміз.</span></p>
+      <div class="sign"><span><span class="ru">С уважением,</span><span class="kk">Құрметпен,</span> Амантай Сұлтанәлі</span><span><span class="ru">2 «Ғ» класс</span><span class="kk">2 «Ғ» сынып</span></span></div>
+    </article>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker"><span class="ru">Почему это важно</span><span class="kk">Неге бұл маңызды</span></span>
+      <h2><span class="ru">Зачем школьнику сортировать мусор?</span><span class="kk">Оқушыға қоқысты сұрыптау не үшін керек?</span></h2>
+    </div>
+    <div class="why">
+      <div class="fact" style="--bg:var(--sky)">
+        <div class="big" style="color:var(--blue)">75 <small><span class="ru">тонн в год</span><span class="kk">тонна жылына</span></small></div>
+        <p><span class="ru">Столько мусора выбрасывает только наш дом. Это тяжелее, чем 12 слонов!</span><span class="kk">Тек біздің үй қанша қоқыс тастайды. Бұл 12 пілден ауыр!</span></p>
+      </div>
+      <div class="fact" style="--bg:#FFF1C7">
+        <div class="big" style="color:#B7800A"><span class="ru">Новая</span><span class="kk">Жаңа</span> <small><span class="ru">жизнь вещей</span><span class="kk">өмір</span></small></div>
+        <p><span class="ru">Из старой бумаги делают новые тетради, а из пластиковых бутылок — даже тёплые куртки и игрушки.</span><span class="kk">Ескі қағаздан жаңа дәптерлер, ал пластик бөтелкелерден тіпті жылы күртешелер мен ойыншықтар жасайды.</span></p>
+      </div>
+      <div class="fact" style="--bg:#DDF5E8">
+        <div class="big" style="color:var(--leaf)"><span class="ru">Деревья</span><span class="kk">Ағаштар</span></div>
+        <p><span class="ru">Когда мы сдаём макулатуру, для новой бумаги нужно рубить меньше деревьев.</span><span class="kk">Біз макулатура тапсырғанда, жаңа қағаз үшін аз ағаш кесу керек.</span></p>
+      </div>
+      <div class="fact" style="--bg:#FFE3E1">
+        <div class="big" style="color:var(--red)"><span class="ru">Опасно</span><span class="kk">Қауіпті</span></div>
+        <p><span class="ru">В батарейках есть вредные вещества. На свалке они попадают в землю и воду. Поэтому батарейки сдаём отдельно.</span><span class="kk">Батареяларда зиянды заттар бар. Полигонда олар жер мен суға түседі. Сондықтан батареяларды бөлек тапсырамыз.</span></p>
+      </div>
+      <div class="fact" style="--bg:#FFE9D9">
+        <div class="big" style="color:#C45C14"><span class="ru">Чистый</span><span class="kk">Таза</span> <small><span class="ru">город</span><span class="kk">қала</span></small></div>
+        <p><span class="ru">Меньше свалок — чище воздух, земля и река Есиль в нашей Астане.</span><span class="kk">Полигондар аз болса — Астанамыздың ауасы, жері және Есіл өзені таза болады.</span></p>
+      </div>
+      <div class="fact" style="--bg:var(--ink);--fg:#fff">
+        <div class="big" style="color:var(--yellow)"><span class="ru">Мы можем!</span><span class="kk">Біз істей аламыз!</span></div>
+        <p><span class="ru">Привычка сортировать остаётся на всю жизнь. Дети учат родителей — и весь дом начинает сортировать.</span><span class="kk">Сұрыптау әдеті өмір бойы қалады. Балалар ата-анасын үйретеді — бүкіл үй сұрыптай бастайды.</span></p>
+      </div>
+    </div>
+
+    <div class="decomp">
+      <h3><span class="ru">Сколько лет мусор лежит в земле?</span><span class="kk">Қоқыс жерде қанша жыл жатады?</span></h3>
+      <div id="decomp"></div>
+      <p class="src"><span class="ru">Примерные сроки, которые часто приводят экологи. Настоящее время зависит от погоды и почвы.</span><span class="kk">Экологтар жиі келтіретін шамамен алынған мерзімдер. Нақты уақыт ауа райы мен топыраққа байланысты.</span></p>
+    </div>
+
+    <div class="promise">
+      <h3><span class="ru">Что могу сделать я?</span><span class="kk">Мен не істей аламын?</span></h3>
+      <ul>
+        <li><span class="ru">Сортировать мусор дома и в классе</span><span class="kk">Үйде және сыныпта қоқысты сұрыптау</span></li>
+        <li><span class="ru">Носить многоразовую бутылку для воды</span><span class="kk">Көп реттік су бөтелкесін алып жүру</span></li>
+        <li><span class="ru">Писать на обеих сторонах листа</span><span class="kk">Парақтың екі жағына да жазу</span></li>
+        <li><span class="ru">Собирать батарейки и сдавать их с родителями</span><span class="kk">Батареяларды жинап, ата-анаммен бірге тапсыру</span></li>
+        <li><span class="ru">Ходить в магазин со своей сумкой</span><span class="kk">Дүкенге өз сөмкеммен бару</span></li>
+        <li><span class="ru">Рассказать друзьям об этом сайте</span><span class="kk">Достарыма осы сайт туралы айту</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong><span class="ru">Проект Амантая Сұлтанәлі, 2 «Ғ» класс, Астана, 2026</span><span class="kk">Амантай Сұлтанәлінің жобасы, 2 «Ғ» сынып, Астана, 2026</span></strong>
+    <span><span class="ru">Адреса пунктов приёма взяты из статей The Steppe и «Давай Сходим!». Адреса и время работы могут меняться — уточняйте по телефону.</span><span class="kk">Қабылдау пункттерінің мекенжайлары The Steppe және «Давай Сходим!» мақалаларынан алынды. Мекенжайлар мен жұмыс уақыты өзгеруі мүмкін — телефон арқылы нақтылаңыз.</span></span>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var app=document.getElementById('app');
+  var lang='ru';
+  try{var s=localStorage.getItem('eco-lang');if(s==='kk'||s==='ru')lang=s;}catch(e){}
+  function T(o){return o[lang];}
+
+  /* ---------- language ---------- */
+  function setLang(l){
+    lang=l;app.setAttribute('data-lang',l);document.documentElement.lang=(l==='kk'?'kk':'ru');
+    document.getElementById('lang-ru').setAttribute('aria-pressed',l==='ru');
+    document.getElementById('lang-kk').setAttribute('aria-pressed',l==='kk');
+    try{localStorage.setItem('eco-lang',l);}catch(e){}
+    renderCalc();renderGame();renderFilters();renderPlaces();renderDecomp();
+  }
+  document.getElementById('lang-ru').onclick=function(){setLang('ru')};
+  document.getElementById('lang-kk').onclick=function(){setLang('kk')};
+
+  /* ---------- calculator ---------- */
+  var FAMILY=15, FLATS=96, period='w';
+  var P={
+    w:{k:1, ru:'неделю', kk:'аптасына'},
+    m:{k:52/12, ru:'месяц', kk:'айына'},
+    y:{k:52, ru:'год', kk:'жылына'}
+  };
+  var CMP={
+    fam:{w:{ru:'как 3 больших арбуза',kk:'3 үлкен қарбыздай'},m:{ru:'как взрослый человек',kk:'ересек адамдай'},y:{ru:'тяжелее лошади',kk:'аттан ауыр'}},
+    house:{w:{ru:'как легковой автомобиль',kk:'жеңіл көліктей'},m:{ru:'как один большой слон',kk:'бір үлкен пілдей'},y:{ru:'тяжелее 12 слонов',kk:'12 пілден ауыр'}}
+  };
+  function fmt(n,d){return n.toLocaleString('ru-RU',{maximumFractionDigits:d,minimumFractionDigits:d}).replace(/ /g,' ');}
+  function renderCalc(){
+    var k=P[period].k, fam=FAMILY*k, house=FAMILY*FLATS*k;
+    document.getElementById('v-fam').innerHTML=fmt(fam,0)+' <small>'+(lang==='kk'?'кг':'кг')+'</small>';
+    var t=house/1000;
+    document.getElementById('v-house').innerHTML=fmt(t,t<10?2:1)+' <small>'+(lang==='kk'?'т':'т')+'</small>';
+    document.getElementById('c-fam').textContent=T(CMP.fam[period]);
+    document.getElementById('c-house').textContent=T(CMP.house[period]);
+    var f= lang==='ru'
+      ? '15 кг × 96 квартир = 1 440 кг в неделю'+(period==='w'?'':' → × '+(period==='m'?'4,3 недели':'52 недели')+' = '+fmt(house,0)+' кг за '+P[period].ru)
+      : '15 кг × 96 пәтер = аптасына 1 440 кг'+(period==='w'?'':' → × '+(period==='m'?'4,3 апта':'52 апта')+' = '+P[period].kk+' '+fmt(house,0)+' кг');
+    document.getElementById('formula').textContent=f;
+    var bags=document.getElementById('bags');var n=Math.min(Math.round(t*8),200);
+    bags.innerHTML=new Array(n+1).join('<i></i>');
+    document.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===period)});
+  }
+  document.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){period=b.dataset.p;renderCalc();}});
+
+  /* ---------- game ---------- */
+  var BINS=[
+    {id:'paper',c:'var(--blue)',ru:'Бумага',kk:'Қағаз'},
+    {id:'plastic',c:'var(--yellow)',dark:1,ru:'Пластик',kk:'Пластик'},
+    {id:'glass',c:'var(--green)',ru:'Стекло',kk:'Шыны'},
+    {id:'metal',c:'var(--orange)',ru:'Металл',kk:'Металл'},
+    {id:'battery',c:'var(--red)',ru:'Батарейки',kk:'Батареялар'},
+    {id:'other',c:'var(--brown)',ru:'Остальное',kk:'Қалғаны'}
+  ];
+  var ITEMS=[
+    {e:'📰',b:'paper',ru:'Газета',kk:'Газет'},
+    {e:'📦',b:'paper',ru:'Картонная коробка',kk:'Картон қорап'},
+    {e:'📒',b:'paper',ru:'Старая тетрадь',kk:'Ескі дәптер'},
+    {e:'🧴',b:'plastic',ru:'Флакон от шампуня',kk:'Сусабын құтысы'},
+    {e:'🥤',b:'plastic',ru:'Пластиковая бутылка',kk:'Пластик бөтелке'},
+    {e:'🛍️',b:'plastic',ru:'Пакет',kk:'Пакет'},
+    {e:'🫙',b:'glass',ru:'Стеклянная банка',kk:'Шыны банка'},
+    {e:'🍾',b:'glass',ru:'Стеклянная бутылка',kk:'Шыны бөтелке'},
+    {e:'🥫',b:'metal',ru:'Консервная банка',kk:'Консерві банкасы'},
+    {e:'🥤',b:'metal',ru:'Алюминиевая банка от сока',kk:'Шырынның алюминий банкасы',tag:'Al'},
+    {e:'🔋',b:'battery',ru:'Батарейка',kk:'Батарея'},
+    {e:'🍎',b:'other',ru:'Огрызок яблока',kk:'Алма қалдығы'},
+    {e:'🧻',b:'other',ru:'Грязная салфетка',kk:'Лас майлық'}
+  ];
+  var order=[],idx=0,score=0,locked=false;
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function startGame(){order=shuffle(ITEMS.slice());idx=0;score=0;locked=false;document.getElementById('restart').hidden=true;document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback';renderGame();}
+  function renderGame(){
+    var tg=document.getElementById('targets');
+    tg.innerHTML='';
+    BINS.forEach(function(b){
+      var btn=document.createElement('button');btn.type='button';btn.style.setProperty('--c',b.c);if(b.dark)btn.className='dark';
+      btn.innerHTML='<svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="5" y="9" width="20" height="19" rx="3" fill="currentColor" opacity=".35"/><rect x="3" y="5" width="24" height="5" rx="2" fill="currentColor" opacity=".6"/></svg><span>'+T(b)+'</span>';
+      btn.onclick=function(){choose(b,btn)};
+      tg.appendChild(btn);
+    });
+    var done=idx>=order.length;
+    document.getElementById('score').textContent=(lang==='ru'?'Очки: ':'Ұпай: ')+score+' / '+order.length;
+    if(done){
+      document.getElementById('g-emo').textContent='🏆';
+      document.getElementById('g-name').textContent= lang==='ru'
+        ? (score===order.length?'Отлично! Ты настоящий эко-герой!':'Молодец! Правильно '+score+' из '+order.length+'. Попробуй ещё раз!')
+        : (score===order.length?'Керемет! Сен нағыз эко-батырсың!':'Жарайсың! '+order.length+' ішінен '+score+' дұрыс. Тағы көріп көр!');
+      document.getElementById('restart').hidden=false;
+    }else{
+      var it=order[idx];
+      document.getElementById('g-emo').textContent=it.e;
+      document.getElementById('g-name').textContent=(idx+1)+'. '+T(it);
+    }
+  }
+  function choose(b,btn){
+    if(locked||idx>=order.length)return;
+    var it=order[idx],fb=document.getElementById('feedback');
+    var right=BINS.filter(function(x){return x.id===it.b})[0];
+    btn.classList.remove('good','bad');void btn.offsetWidth;
+    if(b.id===it.b){score++;btn.classList.add('good');fb.className='feedback ok';fb.textContent=(lang==='ru'?'Верно! ':'Дұрыс! ')+T(it)+' → '+T(right);}
+    else{btn.classList.add('bad');fb.className='feedback err';fb.textContent=(lang==='ru'?'Не совсем. Правильно: ':'Дұрыс емес. Дұрысы: ')+T(right);}
+    locked=true;setTimeout(function(){idx++;locked=false;renderGame();},900);
+  }
+  document.getElementById('restart').onclick=startGame;
+
+  /* ---------- map ---------- */
+  var MAT={
+    paper:{ru:'бумага',kk:'қағаз',bg:'#D6E6FF'},
+    plastic:{ru:'пластик',kk:'пластик',bg:'#FFEBB0'},
+    glass:{ru:'стекло',kk:'шыны',bg:'#CDEFDD'},
+    metal:{ru:'металл',kk:'металл',bg:'#FFDCC4'},
+    film:{ru:'плёнка, пакеты',kk:'үлдір, пакеттер',bg:'#EDE4F7'}
+  };
+  var ORG={
+    act:{name:'Astana Clean Time',hours:{ru:'Вт–Вс 9:30–19:00, пн выходной',kk:'Сс–Жс 9:30–19:00, дс демалыс'},phone:'+7 701 351 37 00',mat:['paper','glass','plastic','metal','film'],c:'#2F7DF6'},
+    ls:{name:'LS ecolife',hours:{ru:'Вт–Вс 10:00–19:00, пн выходной',kk:'Сс–Жс 10:00–19:00, дс демалыс'},phone:'',mat:['paper','plastic','metal','film'],c:'#1FAE6B'},
+    gs:{name:'Green Station',hours:{ru:'Пн–Сб 9:00–18:00',kk:'Дс–Сб 9:00–18:00'},phone:'+7 702 502 33 62',mat:['paper','plastic','glass','film'],c:'#FF8A3D'},
+    eco:{name:'ECO KZ',hours:{ru:'Пн–Пт 9:00–24:00, Сб–Вс 9:00–18:00',kk:'Дс–Жм 9:00–24:00, Сб–Жс 9:00–18:00'},phone:'+7 776 563 43 43',mat:['paper','plastic','metal','film'],c:'#8C5BD6'},
+    ep:{name:'Ecoplatform',hours:{ru:'часы работы уточняйте',kk:'жұмыс уақытын нақтылаңыз'},phone:'',mat:['plastic','metal'],c:'#F24B45'},
+    tk:{name:'Astana taza kala',hours:{ru:'Пн–Пт 9:00–17:00',kk:'Дс–Жм 9:00–17:00'},phone:'+7 747 955 29 30',mat:['plastic'],c:'#E0A40C'}
+  };
+  var PLACES=[
+    {o:'act',ru:'пр. Достык, 5/1',kk:'Достық даңғылы, 5/1',x:520,y:372},
+    {o:'act',ru:'ул. Туркестан, 30',kk:'Түркістан көшесі, 30',x:395,y:420},
+    {o:'act',ru:'ул. Кравцова, 2/1',kk:'Кравцов көшесі, 2/1',x:330,y:150},
+    {o:'act',ru:'пр. Сейфуллина, 65',kk:'Сейфуллин даңғылы, 65',x:405,y:210},
+    {o:'act',ru:'ул. Иманова, 50/1',kk:'Иманов көшесі, 50/1',x:445,y:150},
+    {o:'gs',ru:'пр. Абылай хана, 29/2',kk:'Абылай хан даңғылы, 29/2',x:640,y:130},
+    {o:'ls',ru:'ул. Мустафина, 17/1',kk:'Мұстафин көшесі, 17/1',x:230,y:95},
+    {o:'ls',ru:'пр. Сарыарка, 31а',kk:'Сарыарқа даңғылы, 31а',x:255,y:250},
+    {o:'ls',ru:'пр. Кошкарбаева, 44',kk:'Қошқарбаев даңғылы, 44',x:700,y:210},
+    {o:'ls',ru:'ул. Манаса, 11/4',kk:'Манас көшесі, 11/4',x:520,y:215},
+    {o:'ls',ru:'ул. Кюйши Дина, 26а',kk:'Күйші Дина көшесі, 26а',x:615,y:245},
+    {o:'eco',ru:'ул. Жаназол, 20/3',kk:'Жаңажол көшесі, 20/3',x:720,y:150},
+    {o:'ep',ru:'ул. Сатпаева, 22 (КазНИТУ)',kk:'Сәтбаев көшесі, 22 (ҚазҰТЗУ)',x:560,y:185},
+    {o:'ep',ru:'мкр. Самал-2, 111 (ТРЦ Dostyk Plaza)',kk:'Самал-2 ш/а, 111 (Dostyk Plaza СОО)',x:470,y:270},
+    {o:'tk',ru:'ул. Габидена Мустафина, 21',kk:'Ғабиден Мұстафин көшесі, 21',x:200,y:130}
+  ];
+  var filter='all', sel=-1;
+  function visible(p){return filter==='all'||ORG[p.o].mat.indexOf(filter)>-1;}
+  function renderFilters(){
+    var f=document.getElementById('filters');f.innerHTML='';
+    [['all',{ru:'Все',kk:'Барлығы'}]].concat(Object.keys(MAT).map(function(k){return [k,MAT[k]]})).forEach(function(a){
+      var b=document.createElement('button');b.type='button';b.textContent=T(a[1]).replace(/^./,function(c){return c.toUpperCase()});
+      b.setAttribute('aria-pressed',filter===a[0]);b.onclick=function(){filter=a[0];sel=-1;renderFilters();renderPlaces();};f.appendChild(b);
+    });
+  }
+  function link(p){return 'https://2gis.kz/astana/search/'+encodeURIComponent('Астана, '+p.ru.replace(/\s*\(.*\)/,''));}
+  function renderPlaces(){
+    var list=document.getElementById('places'),g=document.getElementById('pins');list.innerHTML='';g.innerHTML='';
+    var NS='http://www.w3.org/2000/svg',n=0;
+    PLACES.forEach(function(p,i){
+      if(!visible(p))return;n++;var org=ORG[p.o];
+      var card=document.createElement('div');card.className='place'+(sel===i?' on':'');card.id='pl-'+i;card.style.setProperty('--c',org.c);
+      card.innerHTML='<div class="ph"><span class="no">'+n+'</span><h3>'+org.name+'</h3></div>'+
+        '<div class="addr">'+T(p)+'</div>'+
+        '<div class="meta">'+T(org.hours)+(org.phone?' · <a href="tel:'+org.phone.replace(/\s/g,'')+'">'+org.phone+'</a>':'')+'</div>'+
+        '<div class="chips">'+org.mat.map(function(m){return '<span class="chip" style="--cbg:'+MAT[m].bg+'">'+T(MAT[m])+'</span>'}).join('')+'</div>'+
+        '<a class="go" href="'+link(p)+'" target="_blank" rel="noopener">'+(lang==='ru'?'Открыть в 2ГИС →':'2ГИС-те ашу →')+'</a>';
+      card.onclick=function(e){if(e.target.tagName!=='A'){sel=i;renderPlaces();}};
+      list.appendChild(card);
+      var pin=document.createElementNS(NS,'g');pin.setAttribute('class','pin'+(sel===i?' on':''));pin.setAttribute('tabindex','0');pin.setAttribute('role','button');
+      pin.setAttribute('aria-label',org.name+', '+T(p));
+      pin.setAttribute('transform','translate('+p.x+' '+p.y+')');
+      pin.innerHTML='<circle class="outer" r="18" fill="'+org.c+'" stroke="#fff" stroke-width="3"/><text y="6" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="900" font-size="17" fill="#fff">'+n+'</text>';
+      var go=function(){sel=i;renderPlaces();var el=document.getElementById('pl-'+i);if(el)el.scrollIntoView({block:'nearest',behavior:'smooth'});};
+      pin.addEventListener('click',go);pin.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+      g.appendChild(pin);
+    });
+  }
+
+  /* ---------- decomposition bars (log scale) ---------- */
+  var DEC=[
+    {ru:'Бумага',kk:'Қағаз',v:0.25,lab:{ru:'2–5 месяцев',kk:'2–5 ай'},c:'var(--blue)'},
+    {ru:'Огрызок яблока',kk:'Алма қалдығы',v:0.1,lab:{ru:'около 1 месяца',kk:'шамамен 1 ай'},c:'var(--brown)'},
+    {ru:'Консервная банка',kk:'Консерві банкасы',v:50,lab:{ru:'около 50 лет',kk:'шамамен 50 жыл'},c:'var(--orange)'},
+    {ru:'Пластиковая бутылка',kk:'Пластик бөтелке',v:450,lab:{ru:'около 450 лет',kk:'шамамен 450 жыл'},c:'var(--yellow)'},
+    {ru:'Стеклянная бутылка',kk:'Шыны бөтелке',v:1000000,lab:{ru:'1 000 000 лет',kk:'1 000 000 жыл'},c:'var(--green)'}
+  ];
+  function renderDecomp(){
+    var min=Math.log10(0.05),max=Math.log10(1000000);
+    document.getElementById('decomp').innerHTML=DEC.map(function(d){
+      var w=Math.max(4,(Math.log10(d.v)-min)/(max-min)*100);
+      return '<div class="bar-row"><span>'+T(d)+'</span><div class="track"><div class="fill" style="width:'+w.toFixed(1)+'%;--c:'+d.c+'"></div></div><span class="yrs">'+T(d.lab)+'</span></div>';
+    }).join('');
+  }
+
+  startGame();
+  setLang(lang);
+})();
+</script>
+
+</body>
+</html>
